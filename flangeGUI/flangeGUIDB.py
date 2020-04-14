@@ -6,7 +6,7 @@
 
 from rsg.rsgGui import *
 from abaqusConstants import INTEGER, FLOAT
-dialogBox = RsgDialog(title='Raised Face Weld Neck Flange', kernelModule='FlangeWithBoltHolesMacro', kernelFunction='FlangeWithBoltHoles', includeApplyBtn=False, includeSeparator=True, okBtnText='OK', applyBtnText='Apply', execDir=thisDir)
+dialogBox = RsgDialog(title='Raised Face Weld Neck Flange', kernelModule='FlangeWithComplexHub', kernelFunction='FlangeWithComplexHub', includeApplyBtn=False, includeSeparator=True, okBtnText='OK', applyBtnText='Apply', execDir=thisDir)
 RsgTextField(p='DialogBox', fieldType='Float', ncols=12, labelText='Raised Face:', keyword='raisedFace', default='')
 RsgTextField(p='DialogBox', fieldType='Float', ncols=12, labelText='Raised Face Outer Diameter:', keyword='raisedFaceOD', default='')
 RsgTextField(p='DialogBox', fieldType='Float', ncols=12, labelText='Flange Outer Diameter:', keyword='flangeOD', default='')

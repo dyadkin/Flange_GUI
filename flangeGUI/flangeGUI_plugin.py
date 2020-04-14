@@ -8,7 +8,7 @@ toolset = getAFXApp().getAFXMainWindow().getPluginToolset()
 toolset.registerGuiMenuButton(
     buttonText='Create RFWN Flange', 
     object=Activator(os.path.join(thisDir, 'flangeGUIDB.py')),
-    kernelInitString='import FlangeWithBoltHolesMacro',
+    kernelInitString='import FlangeWithComplexHub',
     messageId=AFXMode.ID_ACTIVATE,
     icon=None,
     applicableModules=ALL,
