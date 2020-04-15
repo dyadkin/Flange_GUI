@@ -6,7 +6,8 @@ import __main__
 import math
 
 def FlangeWithComplexHub(raisedFace, raisedFaceOD, flangeOD, boltCircleD, boltHoles, boltD, 
-    flangeThickness, hubD, pipeOD, hubLength, pipeID):
+    flangeThickness, hubD, pipeOD, hubLength, pipeSchedule):
+    pipeID = pipeOD - 2*pipeSchedule
     r = 0.12
     s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
@@ -33,28 +34,33 @@ def FlangeWithComplexHub(raisedFace, raisedFaceOD, flangeOD, boltCircleD, boltHo
     #     0.807396, 1.73441, 188.562), cameraTarget=(0.807396, 1.73441, 0))
 
     #Hub Geometry
-    x_right = hubLength+raisedFace-((pipeOD/2-pipeID/2)-0.03)*math.tan(math.radians(40))
+    if pipeSchedule <= 0.88:
+        model2 = False
+        x_right = hubLength+raisedFace-(pipeOD/2-pipeID/2-0.03)*math.tan(math.radians(40))
+    else:
+        model2 = True
+        x_right = hubLength+raisedFace-((3.0/4.0)-0.03)*math.tan(math.radians(40))-(pipeSchedule-(3.0/4.0))*math.tan(math.radians(12.5))
 
     for alpha in range(19, 45):
         theta = 90-alpha
         x = flangeThickness+raisedFace
         y = hubD/2
 
-        print(theta)
-
         A = x+r*(1-math.cos(math.radians(theta)))
         B = y-r*math.sin(math.radians(theta))
 
         m = - (A-x-r)/(B-y) 
         b =  B-m*A 
-        print("slope:", m)
 
         y2 = pipeOD/2
         x2 = (y2-b)/m
 
         if x_right-x2 >= 0.25:
-            print("It works")
             break
+
+    print("x2: ", x2)
+    print("x_right: ", x_right)
+    print("alpha: ", alpha)
 
     s.ArcByCenterEnds(center=(flangeThickness + raisedFace + r, hubD/2), point1=(flangeThickness + raisedFace, hubD/2), point2=(
         A, B), direction=COUNTERCLOCKWISE)
@@ -62,23 +68,34 @@ def FlangeWithComplexHub(raisedFace, raisedFaceOD, flangeOD, boltCircleD, boltHo
     # session.viewports['Viewport: 1'].view.setValues(nearPlane=187.92, 
     #     farPlane=189.204, width=3.81556, height=1.93426, cameraPosition=(
     #     1.00583, 1.71983, 188.562), cameraTarget=(1.00583, 1.71983, 0))
-    s.Line(point1=(x2, y2), point2=(x_right, y2))
+    s.Line(point1=(x2, y2), point2=(x_right, y2)) #point2=(hubLength + raisedFace, y2)
     s.HorizontalConstraint(entity=g[10], addUndoState=False)
-    s.Line(point1=(x_right, y2), point2=(hubLength + raisedFace, pipeID/2 + .03))
-    s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2))
-    s.VerticalConstraint(entity=g[12], addUndoState=False)
-    s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
-    s.HorizontalConstraint(entity=g[13], addUndoState=False)
-    s.PerpendicularConstraint(entity1=g[12], entity2=g[13], addUndoState=False)
-    # session.viewports['Viewport: 1'].view.setValues(nearPlane=187.127, 
-    #     farPlane=189.996, width=8.52897, height=4.32366, cameraPosition=(
-    #     1.44564, 2.6527, 188.562), cameraTarget=(1.44564, 2.6527, 0))
-    # session.viewports['Viewport: 1'].view.setValues(cameraPosition=(1.61125, 
-    #     1.40425, 188.562), cameraTarget=(1.61125, 1.40425, 0))
-    s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
-    s.HorizontalConstraint(entity=g[14], addUndoState=False)
-    s.sketchOptions.setValues(constructionGeometry=ON)
-    s.assignCenterline(line=g[14])
+    if model2:
+        print("model2")
+        s.Line(point1=(x_right, y2), point2=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)),
+            pipeOD/2 - (pipeSchedule - 3.0/4.0)))
+        s.Line(point1=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)), pipeOD/2 - (pipeSchedule - 3.0/4.0)),
+            point2=(hubLength + raisedFace, pipeID/2 + .03))
+        s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2))
+        s.VerticalConstraint(entity=g[13], addUndoState=False)
+        s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
+        s.HorizontalConstraint(entity=g[14], addUndoState=False)
+        s.PerpendicularConstraint(entity1=g[13], entity2=g[14], addUndoState=False)
+        s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
+        s.HorizontalConstraint(entity=g[15], addUndoState=False)
+        s.sketchOptions.setValues(constructionGeometry=ON)
+        s.assignCenterline(line=g[15])
+    else:
+        s.Line(point1=(x_right, y2), point2=(hubLength + raisedFace, pipeID/2 + .03)) #Diagoanl line to be removed
+        s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2)) #point1=(hubLength+raisedFace, y2)
+        s.VerticalConstraint(entity=g[12], addUndoState=False)
+        s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
+        s.HorizontalConstraint(entity=g[13], addUndoState=False)
+        s.PerpendicularConstraint(entity1=g[12], entity2=g[13], addUndoState=False)
+        s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
+        s.HorizontalConstraint(entity=g[14], addUndoState=False)
+        s.sketchOptions.setValues(constructionGeometry=ON)
+        s.assignCenterline(line=g[14])
     p = mdb.models['Model-1'].Part(name='RFWN', dimensionality=THREE_D, 
         type=DEFORMABLE_BODY)
     p = mdb.models['Model-1'].parts['RFWN']
