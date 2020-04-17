@@ -6,7 +6,7 @@
 
 from rsg.rsgGui import *
 from abaqusConstants import INTEGER, FLOAT
-dialogBox = RsgDialog(title='Rased Face Weld Neck Flange', kernelModule='mainScript', kernelFunction='mainScript', includeApplyBtn=False, includeSeparator=True, okBtnText='OK', applyBtnText='Apply', execDir=thisDir)
+dialogBox = RsgDialog(title='Raised Face Weld Neck Flange', kernelModule='mainScript', kernelFunction='mainScript', includeApplyBtn=False, includeSeparator=True, okBtnText='OK', applyBtnText='Apply', execDir=thisDir)
 RsgComboBox(name='ComboBox_1', p='DialogBox', text='Flange Class:', keyword='flangeClass', default='150', comboType='STANDARD', repository='', rootText='', rootKeyword=None, layout='')
 RsgListItem(p='ComboBox_1', text='150')
 RsgListItem(p='ComboBox_1', text='300')
@@ -33,4 +33,5 @@ RsgListItem(p='ComboBox_2', text='20')
 RsgListItem(p='ComboBox_2', text='22')
 RsgListItem(p='ComboBox_2', text='24')
 RsgTextField(p='DialogBox', fieldType='Float', ncols=12, labelText='Pipe Schedule:', keyword='pipeSchedule', default='')
+RsgTextField(p='DialogBox', fieldType='Float', ncols=12, labelText='Gasket Thickness:', keyword='gasketThickness', default='')
 dialogBox.show()

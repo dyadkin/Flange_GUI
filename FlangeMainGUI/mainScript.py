@@ -1,10 +1,23 @@
+import os
 import imp
 
-Flange = imp.load_source('FlangeWithThickComplexHub', "C:\\Users\\jcoll\\abaqus_plugins\\FlangeMainGUI\\FlangeWithThickComplexHub.py")
-Mapper = imp.load_source('FlangeWithThickComplexHub', "C:\\Users\\jcoll\\abaqus_plugins\\FlangeMainGUI\\csv_reader.py")
-# from FlangeWithThickComplexHub import flange
-# from csv_reader import mapper
-def mainScript(flangeClass, flangeSize, pipeSchedule):
+# cwd = os.getcwd()
+# print(cwd)
+
+HOME = os.environ.get("HOMEDRIVE")
+USER = os.environ.get("USERNAME")
+
+Flange = imp.load_source('FlangeWithThickComplexHub', HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\FlangeWithThickComplexHub.py")
+Bolt = imp.load_source('createBolt', HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\createBolt.py")
+Mapper = imp.load_source('csv_reader', HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\csv_reader.py")
+
+
+# Flange = imp.load_source('FlangeWithThickComplexHub', "C:\\Users\\yakov\\abaqus_plugins\\FlangeMainGUI\\FlangeWithThickComplexHub.py")
+# Mapper = imp.load_source('FlangeWithThickComplexHub', "C:\\Users\\yakov\\abaqus_plugins\\FlangeMainGUI\\csv_reader.py")
+
+def mainScript(flangeClass, flangeSize, pipeSchedule, gasketThickness):
 
 	dimensions = Mapper.mapper(flangeClass, flangeSize)
-	Flange.flange(dimensions, pipeSchedule)
+	Flange.flange(dimensions.get("flangeDimensions"), pipeSchedule)
+	Bolt.makeBolt(dimensions, gasketThickness)
+

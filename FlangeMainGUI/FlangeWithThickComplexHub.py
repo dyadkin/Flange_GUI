@@ -38,9 +38,6 @@ def flange(dimensions, pipeSchedule):
     s.Line(point1=(flangeThickness + raisedFace, flangeOD/2), point2=(flangeThickness + raisedFace, hubD/2))
     s.VerticalConstraint(entity=g[7], addUndoState=False)
     s.PerpendicularConstraint(entity1=g[6], entity2=g[7], addUndoState=False)
-    # session.viewports['Viewport: 1'].view.setValues(nearPlane=186.208, 
-    #     farPlane=190.915, width=12.3632, height=6.26736, cameraPosition=(
-    #     0.807396, 1.73441, 188.562), cameraTarget=(0.807396, 1.73441, 0))
 
     #Hub Geometry
     if pipeSchedule <= 0.88:
@@ -67,13 +64,9 @@ def flange(dimensions, pipeSchedule):
         if x_right-x2 >= 0.25:
             break
 
-
     s.ArcByCenterEnds(center=(flangeThickness + raisedFace + r, hubD/2), point1=(flangeThickness + raisedFace, hubD/2), point2=(
         A, B), direction=COUNTERCLOCKWISE)
     s.Line(point1=(A, B), point2=(x2, y2))
-    # session.viewports['Viewport: 1'].view.setValues(nearPlane=187.92, 
-    #     farPlane=189.204, width=3.81556, height=1.93426, cameraPosition=(
-    #     1.00583, 1.71983, 188.562), cameraTarget=(1.00583, 1.71983, 0))
     s.Line(point1=(x2, y2), point2=(x_right, y2)) #point2=(hubLength + raisedFace, y2)
     s.HorizontalConstraint(entity=g[10], addUndoState=False)
     if model2:
@@ -108,16 +101,7 @@ def flange(dimensions, pipeSchedule):
     p.BaseSolidRevolve(sketch=s, angle=180.0, flipRevolveDirection=OFF)
     s.unsetPrimaryObject()
     p = mdb.models['Model-1'].parts['RFWN']
-    # session.viewports['Viewport: 1'].setValues(displayedObject=p)
     del mdb.models['Model-1'].sketches['__profile__']
-    # session.viewports['Viewport: 1'].view.setValues(nearPlane=9.74776, 
-    #     farPlane=22.2085, width=11.4479, height=5.11336, viewOffsetX=-0.592769, 
-    #     viewOffsetY=-0.0123213)
-    # session.viewports['Viewport: 1'].view.setValues(nearPlane=12.4509, 
-    #     farPlane=21.1284, width=14.6225, height=6.53136, cameraPosition=(
-    #     -14.6768, -0.808201, 6.69836), cameraUpVector=(0.181674, 0.892345, 
-    #     -0.413176), cameraTarget=(0.867366, 0.372887, 3.19349), 
-    #     viewOffsetX=-0.757148, viewOffsetY=-0.0157381)
     p = mdb.models['Model-1'].parts['RFWN']
     f, e = p.faces, p.edges
     t = p.MakeSketchTransform(sketchPlane=f[2], sketchUpEdge=e[7], 
