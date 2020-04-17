@@ -67,9 +67,6 @@ def flange(dimensions, pipeSchedule):
         if x_right-x2 >= 0.25:
             break
 
-    print("x2: ", x2)
-    print("x_right: ", x_right)
-    print("alpha: ", alpha)
 
     s.ArcByCenterEnds(center=(flangeThickness + raisedFace + r, hubD/2), point1=(flangeThickness + raisedFace, hubD/2), point2=(
         A, B), direction=COUNTERCLOCKWISE)
