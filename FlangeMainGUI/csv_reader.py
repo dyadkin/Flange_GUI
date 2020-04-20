@@ -18,10 +18,12 @@ def mapper(flangeClass, NPS):
 		lines = csv.reader(file, delimiter=',')
 		for line in lines:
 			if(line[0] == str(NPS)):
-				ans = line[2:12]
+				flangeDimensions = line[2:12]
+				gasketDimensions = line[14:16]
 	file.close()
-	flangeDimensions = map(float, ans)
+	flangeDimensions = map(float, flangeDimensions)
 	flangeDimensions[4] = int(flangeDimensions[4])
+	gasketDimensions = map(float, gasketDimensions)
 	
 	bolt=[]
 	boltFile = HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\Bolts_B16.5.csv"
@@ -29,7 +31,6 @@ def mapper(flangeClass, NPS):
 		lines = csv.reader(filename, delimiter=',')
 		for line in lines:
 			if (line[0] == str(flangeDimensions[5])):
-				print('a')
 				bolt.append(line[4])
 				bolt.append(line[10])
 				bolt.append(line[12])
@@ -37,9 +38,9 @@ def mapper(flangeClass, NPS):
 
 	boltDimensions = map(float, bolt)
 
-	keys = ["flangeDimensions","boltDimensions"]
-	vals = [flangeDimensions, boltDimensions]
+	keys = ["flangeDimensions","boltDimensions", "gasketDimensions"]
+	vals = [flangeDimensions, boltDimensions, gasketDimensions]
 
 	d = dict(zip(keys,vals))
-
+	
 	return d
