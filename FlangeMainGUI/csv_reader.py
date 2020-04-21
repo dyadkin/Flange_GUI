@@ -30,7 +30,7 @@ def mapper(flangeClass, NPS):
 	with open(boltFile, 'rb') as filename:
 		lines = csv.reader(filename, delimiter=',')
 		for line in lines:
-			if (line[0] == str(flangeDimensions[5])):
+			if (line[0] == str(int(flangeDimensions[5]))):
 				bolt.append(line[4])
 				bolt.append(line[10])
 				bolt.append(line[12])
