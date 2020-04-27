@@ -29,11 +29,15 @@ def mapper(flangeClass, NPS):
 	boltFile = HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\Bolts_B16.5.csv"
 	with open(boltFile, 'rb') as filename:
 		lines = csv.reader(filename, delimiter=',')
-		for line in lines:
-			if (line[0] == str(int(flangeDimensions[5]))):
+		for i in range(6):
+			next(lines)
+		for i in range(26):
+			line = next(lines)
+			if (float(line[0]) == flangeDimensions[5]):
 				bolt.append(line[4])
 				bolt.append(line[10])
 				bolt.append(line[12])
+				break
 	filename.close()
 
 	boltDimensions = map(float, bolt)
