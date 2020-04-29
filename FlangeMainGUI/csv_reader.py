@@ -3,8 +3,11 @@ import csv
 
 #cwd = os.getcwd()
 
-HOME = os.environ.get("HOMEDRIVE")
-USER = os.environ.get("USERNAME")
+# HOME = os.environ.get("HOMEDRIVE")
+# USER = os.environ.get("USERNAME")
+
+thisPath = os.path.abspath(__file__)
+thisDir = os.path.dirname(thisPath)
 
 def mapper(flangeClass, NPS):
 	if (flangeClass == 2500):
@@ -13,7 +16,7 @@ def mapper(flangeClass, NPS):
 	if (flangeClass == 900) or (flangeClass == 1500) or (flangeClass == 2500):
 		if (NPS == 3.5) or (NPS == 22):
 			raise Exception('Size {} does not exist for class #{} flanges.'.format(str(NPS), str(flangeClass)))
-	filename = HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\Flanges_B16.5_" + str(flangeClass) + '.csv'
+	filename = thisDir+"\\Flanges_B16.5_" + str(flangeClass) + '.csv'
 	with open(filename, 'rb') as file:
 		lines = csv.reader(file, delimiter=',')
 		for line in lines:
@@ -26,7 +29,7 @@ def mapper(flangeClass, NPS):
 	gasketDimensions = map(float, gasketDimensions)
 	
 	bolt=[]
-	boltFile = HOME+"\\Users\\"+USER+"\\abaqus_plugins\\FlangeMainGUI\\Bolts_B16.5.csv"
+	boltFile = thisDir+"\\Bolts_B16.5.csv"
 	with open(boltFile, 'rb') as filename:
 		lines = csv.reader(filename, delimiter=',')
 		for i in range(6):
