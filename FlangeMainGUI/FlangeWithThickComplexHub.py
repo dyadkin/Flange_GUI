@@ -6,6 +6,9 @@ import __main__
 import math
 
 def flange(dimensions, pipeSchedule):
+
+    squareOffHub = True
+
     raisedFace = dimensions[0]
     raisedFaceOD = dimensions[1]
     flangeOD = dimensions[2]
@@ -67,34 +70,49 @@ def flange(dimensions, pipeSchedule):
     s.ArcByCenterEnds(center=(flangeThickness + raisedFace + r, hubD/2), point1=(flangeThickness + raisedFace, hubD/2), point2=(
         A, B), direction=COUNTERCLOCKWISE)
     s.Line(point1=(A, B), point2=(x2, y2))
-    s.Line(point1=(x2, y2), point2=(x_right, y2)) #point2=(hubLength + raisedFace, y2)
-    s.HorizontalConstraint(entity=g[10], addUndoState=False)
-    if model2:
-        print("model2")
-        s.Line(point1=(x_right, y2), point2=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)),
-            pipeOD/2 - (pipeSchedule - 3.0/4.0)))
-        s.Line(point1=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)), pipeOD/2 - (pipeSchedule - 3.0/4.0)),
-            point2=(hubLength + raisedFace, pipeID/2 + .03))
-        s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2))
-        s.VerticalConstraint(entity=g[13], addUndoState=False)
+
+    if squareOffHub:
+        s.Line(point1=(x2,y2), point2=(hubLength + raisedFace, y2))
+        s.HorizontalConstraint(entity=g[10], addUndoState=False)
+        s.Line(point1=(hubLength + raisedFace, y2), point2=(hubLength + raisedFace, pipeID/2))
+        s.VerticalConstraint(entity=g[11], addUndoState=False)
         s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
-        s.HorizontalConstraint(entity=g[14], addUndoState=False)
-        s.PerpendicularConstraint(entity1=g[13], entity2=g[14], addUndoState=False)
+        s.HorizontalConstraint(entity=g[12], addUndoState=False)
+        s.PerpendicularConstraint(entity1=g[11], entity2=g[12], addUndoState=False)
         s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
-        s.HorizontalConstraint(entity=g[15], addUndoState=False)
-        s.sketchOptions.setValues(constructionGeometry=ON)
-        s.assignCenterline(line=g[15])
-    else:
-        s.Line(point1=(x_right, y2), point2=(hubLength + raisedFace, pipeID/2 + .03)) #Diagoanl line to be removed
-        s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2)) #point1=(hubLength+raisedFace, y2)
-        s.VerticalConstraint(entity=g[12], addUndoState=False)
-        s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
         s.HorizontalConstraint(entity=g[13], addUndoState=False)
-        s.PerpendicularConstraint(entity1=g[12], entity2=g[13], addUndoState=False)
-        s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
-        s.HorizontalConstraint(entity=g[14], addUndoState=False)
         s.sketchOptions.setValues(constructionGeometry=ON)
-        s.assignCenterline(line=g[14])
+        s.assignCenterline(line=g[13])
+
+    if not squareOffHub:
+        s.Line(point1=(x2, y2), point2=(x_right, y2)) 
+        s.HorizontalConstraint(entity=g[10], addUndoState=False)
+        if model2:
+            s.Line(point1=(x_right, y2), point2=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)),
+                pipeOD/2 - (pipeSchedule - 3.0/4.0)))
+            s.Line(point1=(x_right + (pipeSchedule - 3.0/4.0)*math.tan(math.radians(12.5)), pipeOD/2 - (pipeSchedule - 3.0/4.0)),
+                point2=(hubLength + raisedFace, pipeID/2 + .03))
+            s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2))
+            s.VerticalConstraint(entity=g[13], addUndoState=False)
+            s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
+            s.HorizontalConstraint(entity=g[14], addUndoState=False)
+            s.PerpendicularConstraint(entity1=g[13], entity2=g[14], addUndoState=False)
+            s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
+            s.HorizontalConstraint(entity=g[15], addUndoState=False)
+            s.sketchOptions.setValues(constructionGeometry=ON)
+            s.assignCenterline(line=g[15])
+        else:
+            s.Line(point1=(x_right, y2), point2=(hubLength + raisedFace, pipeID/2 + .03)) #Diagoanl line to be removed
+            s.Line(point1=(hubLength + raisedFace, pipeID/2 + .03), point2=(hubLength + raisedFace, pipeID/2)) #point1=(hubLength+raisedFace, y2)
+            s.VerticalConstraint(entity=g[12], addUndoState=False)
+            s.Line(point1=(hubLength + raisedFace, pipeID/2), point2=(0.0, pipeID/2))
+            s.HorizontalConstraint(entity=g[13], addUndoState=False)
+            s.PerpendicularConstraint(entity1=g[12], entity2=g[13], addUndoState=False)
+            s.ConstructionLine(point1=(-100.0, 0.0), point2=(100.0, 0.0))
+            s.HorizontalConstraint(entity=g[14], addUndoState=False)
+            s.sketchOptions.setValues(constructionGeometry=ON)
+            s.assignCenterline(line=g[14])
+
     p = mdb.models['Model-1'].Part(name='RFWN', dimensionality=THREE_D, 
         type=DEFORMABLE_BODY)
     p = mdb.models['Model-1'].parts['RFWN']
