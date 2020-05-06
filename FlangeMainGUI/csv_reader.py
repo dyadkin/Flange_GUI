@@ -10,11 +10,14 @@ thisPath = os.path.abspath(__file__)
 thisDir = os.path.dirname(thisPath)
 
 def mapper(flangeClass, NPS):
+	flangeClass = int(flangeClass)
 	if (flangeClass == 2500):
-		if (NPS > 12):
+		if (float(NPS) > 12.0):
 			raise Exception('Size {} does not exist for class #{} flanges.'.format(str(NPS), str(flangeClass)))
 	if (flangeClass == 900) or (flangeClass == 1500) or (flangeClass == 2500):
-		if (NPS == 3.5) or (NPS == 22):
+		print('e1')
+		if (float(NPS) == 3.5) or (float(NPS) == 22.0):
+			print('e2')
 			raise Exception('Size {} does not exist for class #{} flanges.'.format(str(NPS), str(flangeClass)))
 	filename = thisDir+"\\Flanges_B16.5_" + str(flangeClass) + '.csv'
 	with open(filename, 'rb') as file:
