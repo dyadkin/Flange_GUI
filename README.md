@@ -1,7 +1,7 @@
 ## Flange Assembly GUI User Guide
 
 ### About
-Repo for a Senior Design Project (Spring 2020) with the goal of creating an Abaqus GUI plugin for a RFWN flange assmebly model.
+Senior Design Project (Spring 2020) with the goal of creating an Abaqus GUI plugin for a RFWN flange assmebly model.
 
 ### Installation
 Once a distribution of Abaqus CAE is installed on your machine, simply pull this respository and copy over the *FlangeMainGUI* folder into your *abaqus_plugins* directory. The plugin should appear in the *Plug-ins* drop down menu in Abaqus with the name *Flange Main GUI*. <br> <br>
@@ -28,6 +28,8 @@ Note, \<section name\> must correspond to one of the following: <br>
 and \<material name\> must correspond to name of the material specified at the beginning of the material script.<br>
 Material assignment is not required for assembly creation, so the material fields can be left blank.<br>
 
+Sample material scripts are available in the github repository.
+
 **_Squared Off Hub Geometry_**
 <br>
 The hub defualts to being squared off at the end. If the user desires to create a model with a complex hub the _squareOffHub_ flag in _flange.py_ needs to be set to **False**.
@@ -35,7 +37,6 @@ The hub defualts to being squared off at the end. If the user desires to create 
 ```python
 squareOffHub = True
 ```
-
 
 
 
