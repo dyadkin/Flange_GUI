@@ -9,8 +9,6 @@ import assignMaterials as Materials
 def mainScript(flangeClass, flangeSize, pipeSchedule, gasketThickness, flangeFileName, gasketFileName, boltFileName):
 
 	dimensions = Mapper.mapper(flangeClass, flangeSize)
-	print(dimensions)
-	print('a')
 	Flange.flange(dimensions.get("flangeDimensions"), pipeSchedule)
 	Bolt.makeBolt(dimensions, gasketThickness)
 	Gasket.makeGasket(dimensions.get("gasketDimensions"), gasketThickness)
