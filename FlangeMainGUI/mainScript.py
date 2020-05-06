@@ -1,7 +1,7 @@
 import makeAssembly as Assembly
 import createBolt as Bolt
 import createGasket as Gasket
-import FlangeWithThickComplexHub as Flange
+import flange as Flange
 import csv_reader as Mapper
 import assignMaterials as Materials
 
